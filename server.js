@@ -44,8 +44,8 @@ function start() {
         deleteItems();
         break;
         
-      case "Quit":
-        quitDatabase();
+      case "Exit":
+        exitDatabase();
         break;
       }
     });
@@ -97,35 +97,98 @@ function viewItems() {
 }
 
 function viewEmployees() {
+  var query = "SELECT * FROM employees"
+  // employees.employees_id, employees.first_name, employees.last_name, roles.title, departments.dept_name, roles.salary, emnployees.manager_id FROM employees JOIN roles ON roles.id = employees.roles_id JOIN departments ON departments.department_id = roles.department_id";
+  // console.log(query)
   connection.query(query, function (err, res){
-
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++){
+      console.table(`${res[i].employees_id} | ${res[i].first_name} | ${res[i].last_name}`);
+    }
   });
 
 }
 
 
-
-
-
-
-
-
-
-
-
-function modifyItems() { 
-  inquirer
-  .prompt({
-    name: "modify",
-    type: "rawlist",
-    message: "What would you like to modify?",
-    choices: [
-      "Add Employee.",
-      "Add Role.",
-      "Add Department.",
-      "Update Employee Role.",
-      "Update Employee Manager."
-    ]
+// function viewEmployeesByDept() {
+//   connection.query("SELECT * FROM departments", function (err, res){
   
-  })
-}
+//     var table = new cTable({
+//       head: ["ID#", "Department"],
+//     });
+
+//     if (err) throw err;
+
+//     for (var i = 0; i < res.length; i++) {
+//       table.push(
+//           [res[i].department_id, res[i].dept_name],
+//       );
+//     }
+//     console.log(table.toString());
+//     start()
+//   });
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function modifyItems() { 
+//   inquirer
+//   .prompt({
+//     name: "modify",
+//     type: "rawlist",
+//     message: "What would you like to modify?",
+//     choices: [
+//       "Add Employee.",
+//       "Add Role.",
+//       "Add Department.",
+//       "Update Employee Role.",
+//       "Update Employee Manager."
+//     ]
+  
+//   })
+// }
+
+
+// function deleteItems() { 
+//   inquirer
+//   .prompt({
+//     name: "delete",
+//     type: "rawlist",
+//     message: "What would you like to remove?",
+//     choices: [
+//       "Remove employee.",
+//       "Remove Roles.",
+//       "Remove Department."
+//     ]
+  
+//   })
+// }
+
+
+
+// function exitDatabase() {
+//   console.log("Thank you, you have exicted the Database. Goodbyye.")
+//   connection.end()
+// }
