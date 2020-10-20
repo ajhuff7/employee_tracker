@@ -1,6 +1,7 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-const cTable = require('console.table');
+const table = require('console.table');
+
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -58,79 +59,76 @@ function viewItems() {
       type: "rawlist",
       message: "What would you like to view?",
       choices: [
-        "View all Employees.",
-        "View employees by Department.",
-        "View employees by Manager.",
-        "View all Roles.",
-        "View all Departments.",
-        "View Department utilized budgets."
+        {
+          name: "View all Employees.",
+          value: viewEmployees(),
+        },
+        {
+          name: "View employees by Department.",
+          value: viewEmployeesByDept,
+        },
+        // {
+        //   name: "View employees by Manager.",
+        //   value: viewEmployeesByMgr, 
+        // },
+        // {
+        //   name: "View all Roles.",
+        //   value: viewRoles, 
+        // },
+        // {
+        //   name: "View all Departments.",
+        //   value: viewDept, 
+        // },
+        // {
+        //   name: "View Department utilized budgets.",
+        //   value: viewDeptBudgets, 
+        // }
       ]
     })
     .then(function(response) {
-      switch (response.action) {
-      case "View all Employees.":
-        viewEmployees();
-        break;
-
-      case "View employees by Department.":
-        viewEmployeesByDept();
-        break;
-
-      case "View employees by Manager.":
-        viewEmployeesByMgr();
-        break;
-        
-      case "View all Roles.":
-        viewRoles();
-        break;
-        
-      case "View all Departments.":
-        viewDept();
-        break;
-
-      case "View Department utilized budgets.":
-        viewDeptBudgets();
-        break;
-      }
-
-    });
+      response.view();
+      
+    })
 }
 
 function viewEmployees() {
-  var query = "SELECT * FROM employees"
-  // employees.employees_id, employees.first_name, employees.last_name, roles.title, departments.dept_name, roles.salary, emnployees.manager_id FROM employees JOIN roles ON roles.id = employees.roles_id JOIN departments ON departments.department_id = roles.department_id";
-  // console.log(query)
+  var query = "SELECT employees.employee_id, employees.first_name, employees.last_name, roles.title, departments.dept_name, roles.salary, employees.manager_id FROM employees JOIN roles ON roles.role_id = employees.role_id JOIN departments ON departments.department_id = roles.department_id";
+
+  // console.log(query);
   connection.query(query, function (err, res){
     if (err) throw err;
-    for (var i = 0; i < res.length; i++){
-      console.table(`${res[i].employees_id} | ${res[i].first_name} | ${res[i].last_name}`);
-    }
+    console.table(res)
+    start();  
   });
 
 }
 
 
-// function viewEmployeesByDept() {
-//   connection.query("SELECT * FROM departments", function (err, res){
+function viewEmployeesByDept() {
+  var query = "SELECT departments.dept_name, employees.employee_id, employees.first_name, employees.last_name, roles.title, departments.dept_name, roles.salary, employees.manager_id FROM employees JOIN roles ON roles.role_id = employees.role_id JOIN departments ON departments.department_id = roles.department_id ORDER BY departments.department_id DESC";
+  connection.query(query, function (err, res){
+    if (err) throw err;
+    console.table(res)
+    start();
+  });
+
+}
+
+function viewEmployeesByMgr() {
+  var query = "SELECT employees.employee_id, employees.first_name, employees.last_name, roles.title, departments.dept_name, roles.salary FROM employees JOIN roles ON roles.role_id = employees.role_id JOIN departments ON departments.department_id = roles.department_id";
+
+  // console.log(query);
+  connection.query(query, function (err, res){
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++){
+      console.log([res[i].employee_id, res[i].first_name, res[i].last_name, res[i].title, res[i].dept_name, res[i].salary])
+    };
+    start();  
+  });
   
-//     var table = new cTable({
-//       head: ["ID#", "Department"],
-//     });
-
-//     if (err) throw err;
-
-//     for (var i = 0; i < res.length; i++) {
-//       table.push(
-//           [res[i].department_id, res[i].dept_name],
-//       );
-//     }
-//     console.log(table.toString());
-//     start()
-//   });
-
-// }
 
 
+}
 
 
 
