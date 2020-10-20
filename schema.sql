@@ -1,4 +1,5 @@
 DROP DATABASE IF EXISTS staff_DB;
+
 CREATE database staff_DB;
 
 USE staff_DB;
@@ -14,6 +15,7 @@ CREATE TABLE roles (
   title VARCHAR(30) NOT NULL,
   salary DECIMAL default 0,
   PRIMARY KEY (role_id),
+  department_id INT,
   FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
 
@@ -22,6 +24,7 @@ CREATE TABLE employees (
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   PRIMARY KEY (employee_id),
+  role_id INT,
   FOREIGN KEY (role_id) REFERENCES roles(role_id),
-  FOREIGN KEY (manager_id) REFERENCES roles(manager_id) DEFAULT NULL
+  manager_id INT NULL
 );
