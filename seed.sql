@@ -28,13 +28,13 @@ VALUES ("Engineer Two", 14000, (SELECT department_id FROM departments WHERE dept
 
 -- inserting employees table contents
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES ("John", "Lennon", (SELECT role_id FROM roles WHERE title= "Sales Entry"), NULL);
+VALUES ("John", "Lennon", (SELECT role_id FROM roles WHERE title= "Sales Entry"), 9);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES ("Jimmy", "Page", (SELECT role_id FROM roles WHERE title= "Sales Entry"), NULL);
+VALUES ("Jimmy", "Page", (SELECT role_id FROM roles WHERE title= "Sales Entry"), 9);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES ("Paul", "McCartney", (SELECT role_id FROM roles WHERE title= "Sales Lead"), NULL);
+VALUES ("Paul", "McCartney", (SELECT role_id FROM roles WHERE title= "Sales Lead"), 9);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("Ringo", "Starr", (SELECT role_id FROM roles WHERE title= "Accounting Clerk"), NULL);
@@ -46,8 +46,13 @@ INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("George", "Harrison", (SELECT role_id FROM roles WHERE title= "Accounting Lead"), NULL);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES ("Mick", "Jagger", (SELECT role_id FROM roles WHERE title= "Engineer One"), NULL);
+VALUES ("Mick", "Jagger", (SELECT role_id FROM roles WHERE title= "Engineer One"), 10);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES ("Keith", "Richards", (SELECT role_id FROM roles WHERE title= "Engineer Two"), NULL);
+VALUES ("Keith", "Richards", (SELECT role_id FROM roles WHERE title= "Engineer Two"), 10);
 
+INSERT INTO roles (title, salary, department_id)
+VALUES ("Sales Manager", 16000, (SELECT department_id FROM departments WHERE dept_name= "Sales"));
+
+INSERT INTO roles (title, salary, department_id)
+VALUES ("Engineer Manager", 18000, (SELECT department_id FROM departments WHERE dept_name= "Engineering"));
