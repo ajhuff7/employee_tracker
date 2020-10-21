@@ -245,10 +245,7 @@ function modifyItems() {
 }
 
 function addEmployee() {
-
-  inquirer
-  .prompt(
-    {
+  inquirer.prompt([{
       name: "first",
       type: "input",
       message: "What is the Employee's first name?"
@@ -320,85 +317,27 @@ function addEmployee() {
           name: "Roger Daltrey",
           value: 11
         }
-      ]
-    }
-    )  
-    .then(function(response) {
-      switch (response) {
-      case "first":
-       first = response.first;
-        break;
+      ]}]).then(function(response) {
 
-      case "last":
-        last = response.last;
-        break;
+        connection.query("INSERT INTO employees SET ?", {
+        first_name: response.first, 
+        last_name: response.last, 
+        manager_id: response.manager,
+        role_id: response.role
+      })
+      console.log("Test");
+      start()
+  });
 
-      case "role":
-        title = response.role;
-        break;
-        
-      case "manager":
-        manager = response.manager;
-        break;
-      }
-    });
-
-    "INSERT INTO employees SET ?",
-    {
-      first_name: first,
-      last_name: last,
-      manager_id: manager,
-      role_id: title,
-    }
-
-    console.log("New Employee has been added to the database!");
-    start();  
+  // "INSERT INTO employees SET ?",
+    // {
+    //   first_name: first,
+    //   last_name: last,
+    //   manager_id: manager,
+    //   role_id: title,
+    // }
 
 }
-
-
-
-
-
-
-
-// function start() {
-//   inquirer
-//     .prompt({
-//       name: "action",
-//       type: "rawlist",
-//       message: "How would you like to interact with the database?",
-//       choices: [
-//         "View",
-//         "Modify",
-//         "Delete",
-//         "Quit"
-//       ]
-//     })
-//     .then(function(response) {
-//       switch (response.action) {
-//       case "View":
-//         viewItems();
-//         break;
-
-//       case "Modify":
-//         modifyItems();
-//         break;
-
-//       case "Delete":
-//         deleteItems();
-//         break;
-        
-//       case "Exit":
-//         exitDatabase();
-//         break;
-//       }
-//     });
-// }
-
-
-
-
 
 
 
