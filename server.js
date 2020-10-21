@@ -487,6 +487,7 @@ function deleteEmployees() {
       connection.query("DELETE FROM employees WHERE ?",{
           first_name: response.delete
       })
+      console.log("This Employee has been Removed from the Database");
       start()
   
   })
@@ -512,6 +513,7 @@ function deleteRoles() {
       connection.query("DELETE FROM roles WHERE ?",{
           title: response.delete
       })
+      console.log("This Role has been Removed from the Database");
       start()
   
   })
@@ -541,6 +543,7 @@ function deleteDepartments() {
       connection.query("DELETE FROM departments WHERE ?",{
           dept_name: response.delete
       })
+      console.log("This Department has been Removed from the Database");
       start()
      
   })
