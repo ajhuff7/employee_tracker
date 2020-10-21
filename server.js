@@ -208,9 +208,6 @@ function engineeringBudget() {
 
 
 function modifyItems() {
-  var query = connection.query(query, function (err, res){
-    if (err) throw err;
-    console.log(res)
 
   inquirer
     .prompt({
@@ -241,18 +238,19 @@ function modifyItems() {
       ]
 
     })
-    .then(function(res) {
+    .then(function(response) {
       response.modify();
     });
-  })
+
 }
 
 function addEmployee() {
+
   inquirer
   .prompt(
     {
-      type: "input",
       name: "first",
+      type: "input",
       message: "What is the Employee's first name?"
     },
     {
@@ -266,15 +264,42 @@ function addEmployee() {
       message: "What is the Employee's Role?",
       choices: 
       [
-        "Sales Entry",
-        "Sales Lead",
-        "Sales Manager",
-        "Accounting Clerk",
-        "Accounting Lead",
-        "Accounting Manager",
-        "Engineer One",
-        "Engineer Two",
-        "Engineer Manager"
+        {
+          name: "Sales Entry",
+          value: 1
+        },
+        {
+          name: "Sales Lead",
+          value: 2
+        },
+        {
+          name: "Sales Manager",
+          value: 7
+        },
+        {
+          name: "Accounting Clerk",
+          value: 3
+        },
+        {
+          name: "Accounting Lead",
+          value: 4
+        },
+        {
+          name: "Accounting Manager",
+          value: 9
+        },
+        {
+          name: "Engineer One",
+          value: 5
+        },
+        {
+          name: "Engineer Two",
+          value: 6
+        },
+        {
+          name: "Engineer Manager",
+          value: 8
+        }
       ]
     },
     {
@@ -298,47 +323,38 @@ function addEmployee() {
       ]
     }
     )  
-
     .then(function(response) {
+      switch (response) {
+      case "first":
+       first = response.first;
+        break;
 
-      first_name.push.response.first,
-      last_name.push.response.last,
-      manager_id.push.response.manager,
-      title.push.response.role
-    
-      "INSERT INTO employees SET ?",
-      {
-        first_name: response.first,
-        last_name: response.last,
-        manager_id: response.manager,
-      },
-      "INSERT INTO roles SET ?",
-      {
-        title: response.role,
+      case "last":
+        last = response.last;
+        break;
+
+      case "role":
+        title = response.role;
+        break;
+        
+      case "manager":
+        manager = response.manager;
+        break;
       }
-    })
+    });
 
-    console.log(`${response.first}${response.last} has been added to the database!`);
+    "INSERT INTO employees SET ?",
+    {
+      first_name: first,
+      last_name: last,
+      manager_id: manager,
+      role_id: title,
+    }
+
+    console.log("New Employee has been added to the database!");
     start();  
 
 }
-
-
-
-
-
-
-      // var query = 'INSERT INTO employees, roles SET (first_name = ${response.first}, last_name = ${response.last}, roles.title = ${response.role}, manager_id = ${response.manager} FROM employees JOIN roles ON roles.role_id = employees.role_id JOIN departments ON departments.department_id = roles.department_id';
-      // title = response.role,
-      // console.log(query);
-      // connection.query(query, function (err, res){
-      //   if (err) throw err;
-      // response.modify(query);
-
-
-
-
-
 
 
 
