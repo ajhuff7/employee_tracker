@@ -33,10 +33,10 @@ function start() {
           name: "Modify",
           value: modifyItems
         },
-        // {
-        //   name: "Delete",
-        //   value: deleteItems
-        // },
+        {
+          name: "Delete",
+          value: deleteItems
+        },
         {
           name: "Quit",
           value: exitDatabase
@@ -219,14 +219,14 @@ function modifyItems() {
           name: "Add an Employee.",
           value: addEmployee
         },
-        // {
-        //   name: "Add a Role.",
-        //   value: addRole
-        // },
-        // {
-        //   name: "Add a Department.",
-        //   value: addDepartment
-        // },
+        {
+          name: "Add a Role.",
+          value: addRole
+        },
+        {
+          name: "Add a Department.",
+          value: addDepartment
+        },
         // {
         //   name: "Update an Employee Role.",
         //   value: updateEmployeeRole
@@ -325,39 +325,227 @@ function addEmployee() {
         manager_id: response.manager,
         role_id: response.role
       })
-      console.log("Test");
+      console.log("This Employee has been added to the Database");
       start()
   });
-
-  // "INSERT INTO employees SET ?",
-    // {
-    //   first_name: first,
-    //   last_name: last,
-    //   manager_id: manager,
-    //   role_id: title,
-    // }
 
 }
 
 
+function addRole() {
+  inquirer.prompt([{
+      name: "role",
+      type: "input",
+      message: "What Role would you like to add?"
+    },
+    {
+      name: "salary",
+      type: "input",
+      message: "What is the Salary of the Role?"
+    },
+    {
+      name: "department",
+      type: "list",
+      message: "What Department is the Role in?",
+      choices: 
+      [
+        {
+          name: "Sales",
+          value: 1
+        },
+        {
+          name: "Accounting",
+          value: 2
+        },
+        {
+          name: "Engineering",
+          value: 3
+        }
+      ]
+      }]).then(function(response) {
+
+        connection.query("INSERT INTO roles SET ?", {
+        title: response.role, 
+        salary: response.salary, 
+        department_id: response.department,
+      })
+      console.log("This Role has been added to the Database");
+      start()
+  });
+
+}
+
+function addDepartment() {
+  inquirer.prompt([{
+      name: "department",
+      type: "input",
+      message: "What Department would you like to add?"
+    }]).then(function(response) {
+
+        connection.query("INSERT INTO departments SET ?", {
+        dept_name: response.department, 
+      })
+      console.log("This Department has been added to the Database");
+      start()
+  });
+
+}
 
 
-
-// function deleteItems() { 
-//   inquirer
-//   .prompt({
-//     name: "delete",
-//     type: "list",
-//     message: "What would you like to remove?",
-//     choices: [
-//       "Remove employee.",
-//       "Remove Roles.",
-//       "Remove Department."
-//     ]
-  
+// function updateEmployeeRole() {
+//   const options = []
+//   const jobs = []
+//   console.log(options)
+//   connection.query("SELECT * FROM employees, roles WHERE roles.role_id = employees.role_id", function (err, res) {
+//     if (err) throw err;
+//     for (var i = 0 ; i < res.length ; i++) {
+//       options.push(res[i].first_name);
+//       jobs.push(res[i].role_id + res[i].title);
+//     }
 //   })
+//     inquirer.prompt([
+//       {
+//         name: "employee",
+//         type: "list",
+//         message: "Which Employee's Role would you like to update?",
+//         choices: [
+//           options
+//         ]
+//       },
+//       {
+//         name: "role",
+//         type: "list",
+//         message: "Select the new Role for the Employee.", 
+//         choices: [
+//           jobs
+//         ]
+//       }
+//     ]).then(function(response) {
+//     response.role()
+//     connection.query("UPDATE employees SET ? WHERE?", [{
+//       role_id: response.role.role_id
+//     },{
+//       first_name: response.employee
+//     }])
+    
+//     console.log("This Employee's Role has been updated in the Database");
+//     start()
+//     })
 // }
 
+
+
+
+
+function deleteItems() { 
+  inquirer
+  .prompt({
+    name: "delete",
+    type: "list",
+    message: "What would you like to Remove from the Database?",
+    choices: [
+      {
+        name: "Remove employee.",
+        value: deleteEmployees
+      },
+      {
+        name: "Remove Roles.",
+        value: deleteRoles
+      },
+      {
+        name: "Remove Department.",
+        value: deleteDepartments
+      }
+    ]
+  })
+  .then(function(response) {
+    response.delete();
+    
+  })
+}
+
+function deleteEmployees() {
+  inquirer.prompt([{
+      name: "delete",
+      type: "list",
+      message: "Which Employee would you like to Remove?",
+      choices: [
+        "John",
+        "Jimmy",
+        "Paul",
+        "Ringo",
+        "Robert",
+        "George",
+        "Mick",
+        "Keith",
+        "Roger",
+        "David",
+        "Roger",
+        "Jack"
+      ]
+    }]).then(function(response) {
+      connection.query("DELETE FROM employees WHERE ?",{
+          first_name: response.delete
+      })
+      start()
+  
+  })
+}
+
+function deleteRoles() {
+  inquirer.prompt([{
+      name: "delete",
+      type: "list",
+      message: "What Role would you like to Remove?",
+      choices: [
+        "Sales Entry",
+        "Sales Lead",
+        "Sales Manager",
+        "Accounting Clerk",
+        "Accounting Lead",
+        "Accounting Manager",
+        "Engineer One",
+        "Engineer Two",
+        "Engineer Manager"
+      ]
+    }]).then(function(response) {
+      connection.query("DELETE FROM roles WHERE ?",{
+          title: response.delete
+      })
+      start()
+  
+  })
+}
+
+function deleteDepartments() {
+  inquirer.prompt([{
+      name: "delete",
+      type: "list",
+      message: "What Department would you like to Remove?",
+      choices: 
+      [
+        {
+          name: "Sales",
+          value: 1
+        },
+        {
+          name: "Accounting",
+          value: 2
+        },
+        {
+          name: "Engineering",
+          value: 3
+        },
+      ]
+    }]).then(function(response) {
+      connection.query("DELETE FROM departments WHERE ?",{
+          dept_name: response.delete
+      })
+      start()
+     
+  })
+
+}
 
 
 function exitDatabase() {
