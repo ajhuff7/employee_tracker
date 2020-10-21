@@ -208,6 +208,10 @@ function engineeringBudget() {
 
 
 function modifyItems() {
+  var query = connection.query(query, function (err, res){
+    if (err) throw err;
+    console.log(res)
+
   inquirer
     .prompt({
       name: "modify",
@@ -237,84 +241,85 @@ function modifyItems() {
       ]
 
     })
-    .then(function(response) {
+    .then(function(res) {
       response.modify();
-      
-    })
+    });
+  })
 }
 
 function addEmployee() {
   inquirer
-    .prompt(
-      {
-        type: "input",
-        name: "first",
-        message: "What is the Employee's first name?"
-      },
-      {
-        type: "input",
-        name: "last",
-        message: "What is the Employee's last name?"
-      },
-      {
-        type: "list",
-        name: "role",
-        message: "What is the Employee's Role?",
-        choices: [
-          "Sales Entry",
-          "Sales Lead",
-          "Sales Manager",
-          "Accounting Clerk",
-          "Accounting Lead",
-          "Accounting Manager",
-          "Engineer One",
-          "Engineer Two",
-          "Engineer Manager"
-        ]
-      },
-      {
-        type: "list",
-        name: "manager",
-        message: "Who is the Employee's Manager?",
-        choices: [
-          "Roger Waters",
-          "David Gilmour",
-          "Roger Daltrey"
-        ]
-      }
-  
-    )
+  .prompt(
+    {
+      type: "input",
+      name: "first",
+      message: "What is the Employee's first name?"
+    },
+    {
+      type: "input",
+      name: "last",
+      message: "What is the Employee's last name?"
+    },
+    {
+      type: "list",
+      name: "role",
+      message: "What is the Employee's Role?",
+      choices: 
+      [
+        "Sales Entry",
+        "Sales Lead",
+        "Sales Manager",
+        "Accounting Clerk",
+        "Accounting Lead",
+        "Accounting Manager",
+        "Engineer One",
+        "Engineer Two",
+        "Engineer Manager"
+      ]
+    },
+    {
+      type: "list",
+      name: "manager",
+      message: "Who is the Employee's Manager?",
+      choices: 
+      [
+        {
+          name: "Roger Waters",
+          value: 9
+        },
+        {
+          name: "David Gilmour",
+          value: 10
+        },
+        {
+          name: "Roger Daltrey",
+          value: 11
+        }
+      ]
+    }
+    )  
+
     .then(function(response) {
-      response.modify();
-      console.log(`${response.first}${response.last} has been added to the database!`);
+
+      first_name.push.response.first,
+      last_name.push.response.last,
+      manager_id.push.response.manager,
+      title.push.response.role
+    
+      "INSERT INTO employees SET ?",
+      {
+        first_name: response.first,
+        last_name: response.last,
+        manager_id: response.manager,
+      },
+      "INSERT INTO roles SET ?",
+      {
+        title: response.role,
+      }
     })
-}
 
-
-
-
-
-
-function setEmployee() {
-  var query = "INSERT INTO employees, roles SET (first_name = ${}, last_name, roles.title, manager_id FROM employees JOIN roles ON roles.role_id = employees.role_id JOIN departments ON departments.department_id = roles.department_id";
-
-  // console.log(query);
-  connection.query(query, function (err, res){
-    if (err) throw err;
-    console.log("New Employee Added!")
+    console.log(`${response.first}${response.last} has been added to the database!`);
     start();  
-  });
-
-  con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-    var sql = "INSERT INTO customers (name, address) VALUES ('Company Inc', 'Highway 37')";
-    con.query(sql, function (err, result) {
-      if (err) throw err;
-      console.log("1 record inserted");
-    });
-  });
-
 
 }
 
@@ -323,17 +328,18 @@ function setEmployee() {
 
 
 
+      // var query = 'INSERT INTO employees, roles SET (first_name = ${response.first}, last_name = ${response.last}, roles.title = ${response.role}, manager_id = ${response.manager} FROM employees JOIN roles ON roles.role_id = employees.role_id JOIN departments ON departments.department_id = roles.department_id';
+      // title = response.role,
+      // console.log(query);
+      // connection.query(query, function (err, res){
+      //   if (err) throw err;
+      // response.modify(query);
 
 
-"Sales Entry"
-"Sales Lead"
-"Sales Manager"
-"Accounting Clerk"
-"Accounting Lead"
-"Accounting Manager"
-"Engineer One"
-"Engineer Two"
-"Engineer Manager"
+
+
+
+
 
 
 
@@ -400,6 +406,6 @@ function setEmployee() {
 
 
 function exitDatabase() {
-  console.log("Thank you, you have exicted the Database. Goodbyye.")
+  console.log("Thank you! You have exicted the Database. Goodbye!")
   connection.end()
 }
